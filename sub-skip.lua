@@ -1,4 +1,4 @@
--- feel free to modify and/or redistribute as long as you give credit to the original creator; © 2022 Ben Kerman
+-- feel free to modify and/or redistribute as long as you give credit to the original creator; © 2022 Ben Kerman; © 2024 peldas
 
 local cfg = {
 	default_state = false,
@@ -8,7 +8,8 @@ local cfg = {
 	lead_in = 0,
 	lead_out = 1,
 	speed_skip_speed_delta = 0.1,
-	min_skip_interval_delta = 0.25
+	min_skip_interval_delta = 0.25,
+	blacklist = {['♬'] = 1, ['～♬'] = 1, ['♬～'] = 1, ['♫'] = 1, ['～♫'] = 1, ['♫～'] = 1}
 }
 require("mp.options").read_options(cfg, nil, function(changes)
 	if changes.default_state then toggle_script() end
@@ -21,6 +22,7 @@ local active = cfg.default_state
 local seek_skip = cfg.seek_mode_default
 local skipping = false
 local sped_up = false
+local blacklist_skip = false
 local last_sub_end, next_sub_start
 
 function calc_next_delay()
@@ -31,10 +33,16 @@ function calc_next_delay()
 	end
 
 	local initial_delay = mp.get_property_number("sub-delay")
+	local current_sub
 
-	-- get time to next line by adjusting subtitle delay
-	-- so that the next line starts at the current time
-	mp.commandv("sub-step", "1")
+	repeat
+		-- get time to next line by adjusting subtitle delay
+		-- so that the next line starts at the current time
+		mp.commandv("sub-step", "1")
+		os.execute('powershell -nop -c "& {sleep -m ' .. tonumber(1) .. '}"')
+		current_sub = mp.get_property('sub-text')
+	until(not cfg.blacklist[current_sub])
+
 	local new_delay = mp.get_property_number("sub-delay")
 	mp.set_property_number("sub-delay", initial_delay)
 
@@ -134,6 +142,19 @@ end
 -- INITIALIZATION/SHARED FUNCTIONALITY --
 
 function start_skip()
+	local time_pos = mp.get_property_number("time-pos")
+	local next_delay = calc_next_delay()
+
+	-- if time-pos is nil the file probably just started playing
+	if not time_pos then
+		last_sub_end = -cfg.lead_in
+	else
+		last_sub_end = time_pos
+	end
+	if next_delay ~= nil then
+		if next_delay < cfg.min_skip_interval then return
+		else next_sub_start = time_pos + next_delay end
+	end
 	skipping = true
 	mp.observe_property("time-pos", "number", handle_tick)
 end
@@ -142,6 +163,7 @@ function end_skip()
 	mp.unobserve_property(handle_tick)
 	skipping = false
 	sped_up = false
+	blacklist_skip = false
 	mp.set_property_number("speed", initial_speed)
 	mp.set_property("video-sync", "audio")
 	mp.set_property("video-sync", initial_video_sync)
@@ -149,22 +171,15 @@ function end_skip()
 end
 
 function handle_sub_change(_, sub_end)
-	if not sub_end and not skipping then
-		local time_pos = mp.get_property_number("time-pos")
-		local next_delay = calc_next_delay()
-
-		-- if time-pos is nil the file probably just started playing
-		if not time_pos then
-			last_sub_end = -cfg.lead_in
-		else
-			last_sub_end = time_pos
-		end
-		if next_delay ~= nil then
-			if next_delay < cfg.min_skip_interval then return
-			else next_sub_start = time_pos + next_delay end
-		end
+	sub_text = mp.get_property('sub-text')
+	if not blacklist_skip and cfg.blacklist[sub_text] then
+		blacklist_skip = true
 		start_skip()
-	elseif skipping and sub_end then end_skip() end
+	elseif not sub_end and not skipping then
+		start_skip()
+	elseif not blacklist_skip and skipping and sub_end and sub_text ~= '' then
+		end_skip()
+	end
 end
 
 function activate()

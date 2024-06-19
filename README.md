@@ -86,9 +86,10 @@ a GitHub issue or send a pull request.
 # sub-skip
 
 This script allows automatically skipping parts of a video that don't contain
-any subtitles. Skipping can be done either by speeding up playback while no
-subtitles are present or by seeking to the start of the next subtitle line,
-skipping the interval between lines entirely.
+any subtitles, or contain only text included in the blacklist. Skipping can be
+done either by speeding up playback while no subtitles are present or by
+seeking to the start of the next subtitle line, skipping the interval between
+lines entirely.
 
 ## How To Use
 
@@ -153,6 +154,11 @@ Create a file at `script-opts/sub_skip.conf` in your mpv config directory:
 
 # how many seconds to change the minimum interval by when invoking sub-skip-{de,in}crease-interval
 #min_skip_interval_delta=0.25
+
+# if subtitle equals a key from this table with a non-zero value then it will be
+# treated as if there were no subtitle i.e. skipped or seeked past.
+# This is currently only guaranteed to work for skipping, but seeking may also work.
+#blacklist = {['♬'] = 1, ['～♬'] = 1, ['♬～'] = 1, ['♫'] = 1, ['～♫'] = 1, ['♫～'] = 1}
 ```
 
 ---
