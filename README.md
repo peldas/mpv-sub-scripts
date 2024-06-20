@@ -158,7 +158,7 @@ Create a file at `script-opts/sub_skip.conf` in your mpv config directory:
 # if subtitle equals a key from this table with a non-zero value then it will be
 # treated as if there were no subtitle i.e. skipped or seeked past.
 # This is currently only guaranteed to work for skipping, but seeking may also work.
-#blacklist = {['♬'] = 1, ['～♬'] = 1, ['♬～'] = 1, ['♫'] = 1, ['～♫'] = 1, ['♫～'] = 1}
+#blacklist = {['♬'] = 1, ['～♬'] = 1, ['♬～'] = 1, ['♫'] = 1, ['～♫'] = 1, ['♫～'] = 1, ['☎'] = 1}
 ```
 
 ---
