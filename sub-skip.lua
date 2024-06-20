@@ -39,8 +39,7 @@ function calc_next_delay()
 		-- get time to next line by adjusting subtitle delay
 		-- so that the next line starts at the current time
 		mp.commandv("sub-step", "1")
-		os.execute('powershell -nop -c "& {sleep -m ' .. tonumber(1) .. '}"')
-		current_sub = mp.get_property('sub-text')
+		mp.add_timeout(0.01, function () current_sub = mp.get_property('sub-text') end)
 	until(not cfg.blacklist[current_sub])
 
 	local new_delay = mp.get_property_number("sub-delay")
