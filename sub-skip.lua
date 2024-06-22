@@ -39,7 +39,11 @@ function calc_next_delay()
 		-- get time to next line by adjusting subtitle delay
 		-- so that the next line starts at the current time
 		mp.commandv("sub-step", "1")
-		mp.add_timeout(0.01, function () current_sub = mp.get_property('sub-text') end)
+		local start = os.clock()
+		while os.clock() - start < 0.01 do
+			-- wait for subtitle text to be populated
+		end
+		current_sub = mp.get_property('sub-text')
 	until(not cfg.blacklist[current_sub])
 
 	local new_delay = mp.get_property_number("sub-delay")
