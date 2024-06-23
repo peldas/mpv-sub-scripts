@@ -91,6 +91,9 @@ done either by speeding up playback while no subtitles are present or by
 seeking to the start of the next subtitle line, skipping the interval between
 lines entirely.
 
+## Example
+https://github.com/peldas/mpv-sub-scripts/assets/13115959/0348ccdd-639c-4302-ba9a-1c85db775bf9
+
 ## How To Use
 
 The script works by briefly changing subtitle delay so that the next line
