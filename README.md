@@ -1,7 +1,7 @@
 # sub-pause
 
-An mpv script that automatically pauses before and/or after each subtitle line.
-Mostly intended for language learning.
+An mpv script that automatically pauses before and/or after each non-blacklisted
+subtitle line. Mostly intended for language learning.
 
 ## Key Bindings
 
@@ -66,6 +66,10 @@ Create a file at `script-opts/sub_pause.conf` in your mpv config directory:
 # if set to 'yes' (the default), the previous line will be replayed after
 # invoking `replay` if there is currently no active line
 #replay_prev=yes
+
+# if subtitle equals a key from this table with a non-zero value then it will be
+# treated as if there were no subtitle i.e. paused
+#blacklist = {['♬'] = 1, ['～♬'] = 1, ['♬～'] = 1, ['♫'] = 1, ['～♫'] = 1, ['♫～'] = 1, ['☎'] = 1}
 ```
 
 ## Known Issues
@@ -159,8 +163,7 @@ Create a file at `script-opts/sub_skip.conf` in your mpv config directory:
 #min_skip_interval_delta=0.25
 
 # if subtitle equals a key from this table with a non-zero value then it will be
-# treated as if there were no subtitle i.e. skipped or seeked past.
-# This is currently only guaranteed to work for skipping, but seeking may also work.
+# treated as if there were no subtitle i.e. skipped or seeked past
 #blacklist = {['♬'] = 1, ['～♬'] = 1, ['♬～'] = 1, ['♫'] = 1, ['～♫'] = 1, ['♫～'] = 1, ['☎'] = 1}
 ```
 

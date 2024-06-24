@@ -1,4 +1,4 @@
--- feel free to modify and/or redistribute as long as you give credit to the original creator; © 2022 Ben Kerman
+-- feel free to modify and/or redistribute as long as you give credit to the original creator; © 2022 Ben Kerman; © 2024 peldas
 
 local cfg = {
 	default_start = false,
@@ -7,7 +7,8 @@ local cfg = {
 	hide_while_playing = false,
 	unpause_time = 0,
 	unpause_override = "SPACE",
-	replay_prev = true
+	replay_prev = true,
+	blacklist = {['♬'] = 1, ['～♬'] = 1, ['♬～'] = 1, ['♫'] = 1, ['～♫'] = 1, ['♫～'] = 1, ['☎'] = 1}
 }
 require("mp.options").read_options(cfg)
 
@@ -60,7 +61,7 @@ end
 
 function handle_sub_change(_, sub_end)
 	mp.unobserve_property(handle_tick)
-	if sub_end ~= nil then
+	if sub_end ~= nil and not cfg.blacklist[mp.get_property('sub-text')] then
 		if pause_at_start then pause() end
 		pause_at = sub_end + mp.get_property_number("sub-delay")
 		mp.observe_property("time-pos", "number", handle_tick)
