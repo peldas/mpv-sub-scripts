@@ -8,7 +8,7 @@ local cfg = {
 	unpause_time = 0,
 	unpause_override = "SPACE",
 	replay_prev = true,
-	blacklist = {['♬'] = 1, ['～♬'] = 1, ['♬～'] = 1, ['♫'] = 1, ['～♫'] = 1, ['♫～'] = 1, ['☎'] = 1}
+	blacklist = {'♬', '～♬', '♬～', '♫', '～♫', '♫～', '☎'}
 }
 require("mp.options").read_options(cfg)
 
@@ -17,6 +17,12 @@ local pause_at_start = cfg.default_start
 local pause_at_end = cfg.default_end
 local skip_next = false
 local pause_at = 0
+
+local initialised_blacklist = {}
+
+for i,v in ipairs(cfg.blacklist) do
+	initialised_blacklist[v] = 1
+end
 
 function set_visibility(state)
 	mp.set_property_bool("sub-visibility", state)
@@ -61,7 +67,7 @@ end
 
 function handle_sub_change(_, sub_end)
 	mp.unobserve_property(handle_tick)
-	if sub_end ~= nil and not cfg.blacklist[mp.get_property('sub-text')] then
+	if sub_end ~= nil and not initialised_blacklist[mp.get_property('sub-text')] then
 		if pause_at_start then pause() end
 		pause_at = sub_end + mp.get_property_number("sub-delay")
 		mp.observe_property("time-pos", "number", handle_tick)

@@ -9,9 +9,10 @@ local cfg = {
 	lead_out = 1,
 	speed_skip_speed_delta = 0.1,
 	min_skip_interval_delta = 0.25,
-	blacklist = {['♬'] = 1, ['～♬'] = 1, ['♬～'] = 1, ['♫'] = 1, ['～♫'] = 1, ['♫～'] = 1, ['☎'] = 1}
+	blacklist = {'♬', '～♬', '♬～', '♫', '～♫', '♫～', '☎'}
 }
 require("mp.options").read_options(cfg, nil, function(changes)
+	
 	if changes.default_state then toggle_script() end
 	if changes.seek_mode_default then switch_mode() end
 	if changes.min_skip_interval then set_min_interval(cfg.min_skip_interval) end
@@ -24,6 +25,13 @@ local skipping = false
 local sped_up = false
 local blacklist_skip = false
 local last_sub_end, next_sub_start
+
+local initialised_blacklist = {}
+
+for i,v in ipairs(cfg.blacklist) do
+	initialised_blacklist[v] = 1
+end
+
 
 function calc_next_delay()
 	-- hide subtitles, otherwise sub could briefly flash on screen when stepping
@@ -40,7 +48,7 @@ function calc_next_delay()
 		-- so that the next line starts at the current time
 		mp.commandv("sub-step", "1")
 		current_sub = mp.get_property('sub-text')
-	until(not cfg.blacklist[current_sub])
+	until(not initialised_blacklist[current_sub])
 
 	local new_delay = mp.get_property_number("sub-delay")
 	mp.set_property_number("sub-delay", initial_delay)
@@ -171,7 +179,7 @@ end
 
 function handle_sub_change(_, sub_end)
 	sub_text = mp.get_property('sub-text')
-	if not blacklist_skip and cfg.blacklist[sub_text] then
+	if not blacklist_skip and initialised_blacklist[sub_text] then
 		blacklist_skip = true
 		start_skip()
 	elseif not sub_end and not skipping then

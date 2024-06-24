@@ -70,9 +70,9 @@ Create a file at `script-opts/sub_pause.conf` in your mpv config directory:
 # invoking `replay` if there is currently no active line
 #replay_prev=yes
 
-# if subtitle equals a key from this table with a non-zero value then it will be
+# if subtitle equals a value from this list with a non-zero value then it will be
 # treated as if there were no subtitle i.e. paused
-#blacklist = {['♬'] = 1, ['～♬'] = 1, ['♬～'] = 1, ['♫'] = 1, ['～♫'] = 1, ['♫～'] = 1, ['☎'] = 1}
+#blacklist = {'♬', '～♬', '♬～', '♫', '～♫', '♫～', '☎'}
 ```
 
 ## Known Issues
@@ -165,9 +165,9 @@ Create a file at `script-opts/sub_skip.conf` in your mpv config directory:
 # how many seconds to change the minimum interval by when invoking sub-skip-{de,in}crease-interval
 #min_skip_interval_delta=0.25
 
-# if subtitle equals a key from this table with a non-zero value then it will be
+# if subtitle equals a value from this list with a non-zero value then it will be
 # treated as if there were no subtitle i.e. skipped or seeked past
-#blacklist = {['♬'] = 1, ['～♬'] = 1, ['♬～'] = 1, ['♫'] = 1, ['～♫'] = 1, ['♫～'] = 1, ['☎'] = 1}
+#blacklist = {'♬', '～♬', '♬～', '♫', '～♫', '♫～', '☎'}
 ```
 
 ---
