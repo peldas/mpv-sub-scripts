@@ -3,6 +3,9 @@
 An mpv script that automatically pauses before and/or after each non-blacklisted
 subtitle line. Mostly intended for language learning.
 
+## Example
+https://github.com/peldas/mpv-sub-scripts/assets/13115959/3577b05c-e64e-435c-b1a3-95f9c85fea73
+
 ## Key Bindings
 
 - `(none)`: toggle auto-pause at start of line (`toggle-start`)
