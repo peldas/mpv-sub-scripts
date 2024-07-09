@@ -9,7 +9,7 @@ local cfg = {
 	lead_out = 1,
 	speed_skip_speed_delta = 0.1,
 	min_skip_interval_delta = 0.25,
-	blacklist = {'♬', '～♬', '♬～', '♫', '～♫', '♫～', '☎'}
+	blacklist = {'♬', '～♬', '♬～', '♫', '～♫', '♫～', '☎', '♪', '♪～', '～♪'}
 }
 require("mp.options").read_options(cfg, nil, function(changes)
 	

@@ -8,7 +8,7 @@ local cfg = {
 	unpause_time = 0,
 	unpause_override = "SPACE",
 	replay_prev = true,
-	blacklist = {'♬', '～♬', '♬～', '♫', '～♫', '♫～', '☎'}
+	blacklist = {'♬', '～♬', '♬～', '♫', '～♫', '♫～', '☎', '♪', '♪～', '～♪'}
 }
 require("mp.options").read_options(cfg)
 
