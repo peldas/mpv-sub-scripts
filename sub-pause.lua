@@ -66,6 +66,10 @@ function handle_tick(_, time_pos)
 end
 
 function handle_sub_change(_, sub_end)
+	--if no subtitle track loaded then we don't need to try to pause
+	if mp.get_property_number('sid', -1) == -1 then
+		return
+	end
 	mp.unobserve_property(handle_tick)
 	if sub_end ~= nil and not initialised_blacklist[mp.get_property('sub-text')] then
 		if pause_at_start then pause() end

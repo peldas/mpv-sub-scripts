@@ -178,6 +178,10 @@ function end_skip()
 end
 
 function handle_sub_change(_, sub_end)
+	--if no subtitle track loaded then we don't need to start skipping
+	if mp.get_property_number('sid', -1) == -1 then
+		return
+	end
 	sub_text = mp.get_property('sub-text')
 	if not blacklist_skip and initialised_blacklist[sub_text] then
 		blacklist_skip = true
