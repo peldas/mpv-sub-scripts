@@ -72,7 +72,7 @@ Create a file at `script-opts/sub_pause.conf` in your mpv config directory:
 
 # if subtitle equals a value from this list with a non-zero value then it will be
 # treated as if there were no subtitle i.e. paused
-#blacklist = {'♬', '～♬', '♬～', '♫', '～♫', '♫～', '☎', '♪', '♪～', '～♪'}
+#blacklist={'♬', '～♬', '♬～', '♫', '～♫', '♫～', '☎', '♪', '♪～', '～♪'}
 ```
 
 ## Known Issues
@@ -167,7 +167,7 @@ Create a file at `script-opts/sub_skip.conf` in your mpv config directory:
 
 # if subtitle equals a value from this list with a non-zero value then it will be
 # treated as if there were no subtitle i.e. skipped or seeked past
-#blacklist = {'♬', '～♬', '♬～', '♫', '～♫', '♫～', '☎', '♪', '♪～', '～♪'}
+#blacklist={'♬', '～♬', '♬～', '♫', '～♫', '♫～', '☎', '♪', '♪～', '～♪'}
 ```
 
 ---

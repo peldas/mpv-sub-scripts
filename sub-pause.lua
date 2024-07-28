@@ -12,6 +12,9 @@ local cfg = {
 }
 require("mp.options").read_options(cfg)
 
+if type(cfg.blacklist) == 'string' then
+	cfg.blacklist = load("return " .. cfg.blacklist)()
+end
 local active = false
 local pause_at_start = cfg.default_start
 local pause_at_end = cfg.default_end

@@ -19,6 +19,9 @@ require("mp.options").read_options(cfg, nil, function(changes)
 	if changes.speed_skip_speed then set_speed_skip_speed(cfg.speed_skip_speed) end
 end)
 
+if type(cfg.blacklist) == 'string' then
+	cfg.blacklist = load("return " .. cfg.blacklist)()
+end
 local active = cfg.default_state
 local seek_skip = cfg.seek_mode_default
 local skipping = false
